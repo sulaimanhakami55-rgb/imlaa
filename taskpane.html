@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>إملاء الآيات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Readex+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=1.0.0">
+<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+</head>
+<body>
+<div id="app">
+
+  <header class="hero">
+    <div class="hero-pattern" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <div class="emblem" aria-hidden="true">
+        <svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2.2"><rect x="14" y="14" width="36" height="36" rx="2"/><rect x="14" y="14" width="36" height="36" rx="2" transform="rotate(45 32 32)"/><circle cx="32" cy="32" r="9"/></g><circle cx="32" cy="32" r="3.2" fill="currentColor"/></svg>
+      </div>
+      <h1>إملاء الآيات</h1>
+      <p class="tagline">تحويل الرسم العثماني ورموز خطوط المصحف<br>إلى الرسم الإملائي بين قوسين { }</p>
+      <div class="net" id="net"><span class="dot"></span><span id="netText">جارٍ التحقق من الاتصال…</span></div>
+    </div>
+  </header>
+
+  <main>
+    <!-- لوحة البدء -->
+    <section id="startPanel" class="panel">
+      <div class="seg" role="radiogroup" aria-label="نطاق الفحص">
+        <button class="seg-btn on" data-scope="doc" role="radio" aria-checked="true">المستند كله</button>
+        <button class="seg-btn" data-scope="sel" role="radio" aria-checked="false">النص المحدد</button>
+      </div>
+
+      <button id="scanBtn" class="btn primary big" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>ابحث عن الآيات</span>
+      </button>
+
+      <details class="opts" id="opts">
+        <summary><span>خيارات التحويل</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
+        <div class="opt-list">
+          <label class="sw"><input type="checkbox" id="oTashkeel" checked><i></i><span>إبقاء التشكيل</span></label>
+          <label class="sw"><input type="checkbox" id="oWaqf"><i></i><span>إبقاء علامات الوقف</span></label>
+          <label class="sw"><input type="checkbox" id="oNumbers"><i></i><span>إبقاء أرقام الآيات داخل القوسين</span></label>
+          <label class="sw"><input type="checkbox" id="oRef"><i></i><span>إضافة العزو بعد الآية <em>[السورة: الرقم]</em></span></label>
+          <div class="field">
+            <label for="oFont">خط الآيات بعد التحويل</label>
+            <input id="oFont" type="text" placeholder="تلقائي: خط الفقرة نفسها" autocomplete="off" spellcheck="false">
+            <small>اتركه فارغًا ليأخذ خط الكلام المحيط بالآية.</small>
+          </div>
+        </div>
+      </details>
+
+      <ul class="features">
+        <li><b>نص عثماني</b> مكتوب بخط حفص أو غيره من خطوط اليونيكود</li>
+        <li><b>رموز خطوط مصحف المدينة</b> بإصداراتها ١ و٢ و٤، ولو ظهرت رموزًا غير مقروءة</li>
+        <li>لا يُمسّ غير الآيات، ولا يُحوَّل شيء قبل مراجعتك</li>
+      </ul>
+    </section>
+
+    <!-- التقدم -->
+    <section id="busyPanel" class="panel hidden" aria-live="polite">
+      <div class="loader" aria-hidden="true"><span></span><span></span><span></span></div>
+      <p id="busyText" class="busy-text">جارٍ الفحص…</p>
+      <div class="bar"><i id="barFill"></i></div>
+    </section>
+
+    <!-- النتائج -->
+    <section id="resultsPanel" class="panel hidden">
+      <div class="res-head">
+        <button class="link" id="backBtn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          رجوع
+        </button>
+        <button class="link" id="toggleAll">إلغاء تحديد الكل</button>
+      </div>
+      <div class="stats" id="stats"></div>
+      <ol class="cards" id="cards"></ol>
+      <div class="empty hidden" id="empty">
+        <div class="empty-mark" aria-hidden="true">﴿ ﴾</div>
+        <p>لم يُعثر على آيات بالرسم العثماني أو برموز خطوط المصحف<span id="emptyScope"></span>.</p>
+        <small>الآيات المكتوبة بالإملائي أو الموضوعة بين { } لا تُمسّ.</small>
+      </div>
+    </section>
+
+    <!-- تم -->
+    <section id="donePanel" class="panel hidden">
+      <div class="done-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h2 id="doneTitle">تم التحويل</h2>
+      <p id="doneText" class="muted"></p>
+      <p class="hint">للتراجع استعمل <kbd>Ctrl</kbd> + <kbd>Z</kbd> في Word.</p>
+      <button class="btn primary" id="againBtn">فحص جديد</button>
+    </section>
+  </main>
+
+  <div class="dock hidden" id="dock">
+    <button id="applyBtn" class="btn primary big">تحويل المحدد</button>
+  </div>
+
+  <footer class="credit">
+    إعداد: <b>سليمان حكمي</b>
+    <span class="sep">•</span>
+    النصوص من قاعدة Quran.com الموثقة
+  </footer>
+
+  <!-- غير متصل -->
+  <div class="offline hidden" id="offline" role="alertdialog" aria-labelledby="offTitle">
+    <div class="off-card">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 18a26 26 0 0 1 36 0"/><path d="M12 25a17 17 0 0 1 24 0"/><path d="M18 32a8 8 0 0 1 12 0"/><path d="M8 8l32 32"/></g><circle cx="24" cy="38" r="2.4" fill="currentColor"/></svg>
+      <h2 id="offTitle">لا يوجد اتصال بالإنترنت</h2>
+      <p>تعمل هذه الإضافة مع الاتصال بالإنترنت فقط؛ لأنها تجلب نصوص الآيات من قاعدة موثقة في كل مرة.</p>
+      <button class="btn primary" id="retryBtn">إعادة المحاولة</button>
+    </div>
+  </div>
+
+  <div class="toast hidden" id="toast" role="status"></div>
+</div>
+
+<script src="core.js?v=1.0.0"></script>
+<script src="pipeline.js?v=1.0.0"></script>
+<script src="app.js?v=1.0.0"></script>
+</body>
+</html>
