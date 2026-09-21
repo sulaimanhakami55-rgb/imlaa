@@ -6,8 +6,8 @@
 <title>إملاء الآيات</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&family=Readex+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=2.0.1">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Readex+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=1.0.2">
 <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
 </head>
 <body>
@@ -20,7 +20,7 @@
         <svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2.2"><rect x="14" y="14" width="36" height="36" rx="2"/><rect x="14" y="14" width="36" height="36" rx="2" transform="rotate(45 32 32)"/><circle cx="32" cy="32" r="9"/></g><circle cx="32" cy="32" r="3.2" fill="currentColor"/></svg>
       </div>
       <h1>إملاء الآيات</h1>
-      <p class="tagline">تحويل الآيات بين الرسم الإملائي والرسم العثماني<br>بخطوط المصاحف، مع التخريج والأنماط</p>
+      <p class="tagline">تحويل الرسم العثماني ورموز خطوط المصحف<br>إلى الرسم الإملائي بين قوسين { }</p>
       <div class="net" id="net"><span class="dot"></span><span id="netText">جارٍ التحقق من الاتصال…</span></div>
     </div>
   </header>
@@ -28,29 +28,6 @@
   <main>
     <!-- لوحة البدء -->
     <section id="startPanel" class="panel">
-
-      <div class="modes" role="tablist" aria-label="اتجاه التحويل">
-        <button class="mode on" data-mode="imlaei" role="tab" aria-selected="true">
-          <span class="mode-glyph">{ }</span><span class="mode-t">إلى الإملائي</span><small>من العثماني ورموز المصاحف</small>
-        </button>
-        <button class="mode" data-mode="uthmani" role="tab" aria-selected="false">
-          <span class="mode-glyph q">﴿ ﴾</span><span class="mode-t">إلى العثماني</span><small>بخط المصحف الذي تختاره</small>
-        </button>
-      </div>
-
-      <!-- اختيار خط المصحف -->
-      <div class="only-u">
-        <div class="lbl">خط المصحف</div>
-        <div class="targets" id="targets">
-          <button class="tgt on" data-t="hafs"><b>حفص</b><small>خط حفص العثماني</small></button>
-          <button class="tgt" data-t="v1"><b>المدينة ١</b><small>QCF_P</small></button>
-          <button class="tgt" data-t="v2"><b>المدينة ٢</b><small>QCF2</small></button>
-          <button class="tgt" data-t="v3"><b>المدينة ٣</b><small>QCF3</small></button>
-          <button class="tgt" data-t="v4"><b>المدينة ٤</b><small>QCF4</small></button>
-        </div>
-      </div>
-
-      <div class="lbl">نطاق البحث</div>
       <div class="seg" role="radiogroup" aria-label="نطاق الفحص">
         <button class="seg-btn on" data-scope="doc" role="radio" aria-checked="true">المستند كله</button>
         <button class="seg-btn" data-scope="sel" role="radio" aria-checked="false">النص المحدد</button>
@@ -61,68 +38,26 @@
         <span>ابحث عن الآيات</span>
       </button>
 
-      <!-- الخيارات -->
-      <details class="opts" id="opts" open>
+      <details class="opts" id="opts">
         <summary><span>خيارات التحويل</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
         <div class="opt-list">
-          <div class="only-i">
-            <label class="sw"><input type="checkbox" id="oTashkeel" checked><i></i><span>إبقاء التشكيل</span></label>
-            <label class="sw"><input type="checkbox" id="oWaqf"><i></i><span>إبقاء علامات الوقف</span></label>
-            <label class="sw"><input type="checkbox" id="oNumbers"><i></i><span>إبقاء أرقام الآيات داخل القوسين</span></label>
-          </div>
-          <div class="only-u">
-            <label class="sw"><input type="checkbox" id="oEndNum" checked><i></i><span>رقم الآية في آخر كل آية</span></label>
-            <div class="mini">
-              <span>الأقواس</span>
-              <div class="seg sm" id="segBr">
-                <button class="seg-btn on" data-v="ornate">﴿ ﴾</button>
-                <button class="seg-btn" data-v="curly">{ }</button>
-                <button class="seg-btn" data-v="none">بدون</button>
-              </div>
-            </div>
-          </div>
-          <div class="mini">
-            <span>التخريج</span>
-            <div class="seg sm" id="segRef">
-              <button class="seg-btn on" data-v="none">بدون</button>
-              <button class="seg-btn" data-v="inline">في المتن</button>
-              <button class="seg-btn" data-v="footnote">في الحاشية</button>
-            </div>
-          </div>
-          <div class="field only-i">
-            <label for="oFont">خط الآيات الإملائية</label>
+          <label class="sw"><input type="checkbox" id="oTashkeel" checked><i></i><span>إبقاء التشكيل</span></label>
+          <label class="sw"><input type="checkbox" id="oWaqf"><i></i><span>إبقاء علامات الوقف</span></label>
+          <label class="sw"><input type="checkbox" id="oNumbers"><i></i><span>إبقاء أرقام الآيات داخل القوسين</span></label>
+          <label class="sw"><input type="checkbox" id="oRef"><i></i><span>إضافة العزو بعد الآية <em>[السورة: الرقم]</em></span></label>
+          <div class="field">
+            <label for="oFont">خط الآيات بعد التحويل</label>
             <input id="oFont" type="text" placeholder="تلقائي: خط الفقرة نفسها" autocomplete="off" spellcheck="false">
+            <small>اتركه فارغًا ليأخذ خط الكلام المحيط بالآية.</small>
           </div>
         </div>
       </details>
 
-      <!-- الأنماط -->
-      <details class="opts" id="stylesBox">
-        <summary><span>الأنماط</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
-        <div class="opt-list">
-          <label class="sw"><input type="checkbox" id="oStyles" checked><i></i><span>تنسيق الآيات بأنماط Word</span></label>
-          <ul class="style-names" id="styleNames"></ul>
-          <p class="help">لكل خط ثلاثة أنماط: للآيات، وللأقواس، وللتخريج. عدّلها من جزء «الأنماط» في Word فيتغيّر كل ما حُوِّل بها دفعة واحدة.</p>
-          <button class="btn ghost" id="mkStyles">إنشاء أنماط هذا الخط في المستند الآن</button>
-        </div>
-      </details>
-
-      <!-- أسماء الخطوط -->
-      <details class="opts only-u" id="fontsBox">
-        <summary><span>أسماء خطوط المصاحف في جهازك</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
-        <div class="opt-list">
-          <p class="help">اكتبها كما تظهر في قائمة الخطوط في Word. ‎{ppp}‎ رقم الصفحة بثلاث خانات، و‎{nn}‎ رقم الملف بخانتين.</p>
-          <div class="field"><label for="fHafs">مصحف حفص</label><input id="fHafs" type="text" dir="ltr" spellcheck="false"></div>
-          <div class="field"><label for="fV1">المدينة ١</label><input id="fV1" type="text" dir="ltr" spellcheck="false"></div>
-          <div class="field"><label for="fV2">المدينة ٢</label><input id="fV2" type="text" dir="ltr" spellcheck="false"></div>
-          <div class="field"><label for="fV3">المدينة ٣</label><input id="fV3" type="text" dir="ltr" spellcheck="false"></div>
-          <div class="field"><label for="fV4">المدينة ٤</label><input id="fV4" type="text" dir="ltr" spellcheck="false"></div>
-          <div class="field"><label for="fBr">خط الأقواس المزخرفة</label><input id="fBr" type="text" dir="ltr" spellcheck="false"></div>
-          <button class="link" id="resetFonts">استعادة الأسماء الافتراضية</button>
-        </div>
-      </details>
-
-      <ul class="features" id="features"></ul>
+      <ul class="features">
+        <li><b>نص عثماني</b> مكتوب بخط حفص أو غيره من خطوط اليونيكود</li>
+        <li><b>رموز خطوط مصحف المدينة</b> بإصداراتها ١ و٢ و٤، ولو ظهرت رموزًا غير مقروءة</li>
+        <li>لا يُمسّ غير الآيات، ولا يُحوَّل شيء قبل مراجعتك</li>
+      </ul>
     </section>
 
     <!-- التقدم -->
@@ -145,8 +80,8 @@
       <ol class="cards" id="cards"></ol>
       <div class="empty hidden" id="empty">
         <div class="empty-mark" aria-hidden="true">﴿ ﴾</div>
-        <p id="emptyText"></p>
-        <small id="emptyHint"></small>
+        <p>لم يُعثر على آيات بالرسم العثماني أو برموز خطوط المصحف<span id="emptyScope"></span>.</p>
+        <small>الآيات المكتوبة بالإملائي أو الموضوعة بين { } لا تُمسّ.</small>
       </div>
     </section>
 
@@ -155,7 +90,7 @@
       <div class="done-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h2 id="doneTitle">تم التحويل</h2>
       <p id="doneText" class="muted"></p>
-      <p class="hint">للتراجع استعمل <kbd>Ctrl</kbd> + <kbd>Z</kbd> في Word.</p>
+      <p class="hint">للتراجع استعمل <kbd>⌘</kbd> + <kbd>Z</kbd> في Word.</p>
       <button class="btn primary" id="againBtn">فحص جديد</button>
     </section>
   </main>
@@ -183,9 +118,8 @@
   <div class="toast hidden" id="toast" role="status"></div>
 </div>
 
-<script src="core.js?v=2.0.1"></script>
-<script src="uthmani.js?v=2.0.1"></script>
-<script src="pipeline.js?v=2.0.1"></script>
-<script src="app.js?v=2.0.1"></script>
+<script src="core.js?v=1.0.2"></script>
+<script src="pipeline.js?v=1.0.2"></script>
+<script src="app.js?v=1.0.2"></script>
 </body>
 </html>
