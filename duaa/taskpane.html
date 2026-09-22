@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>رموز الدعاء</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Readex+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=1.0.0">
+<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+</head>
+<body>
+<div id="app">
+
+  <header class="hero">
+    <div class="hero-pattern" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <div class="emblem" aria-hidden="true">
+        <svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2.2"><rect x="14" y="14" width="36" height="36" rx="2"/><rect x="14" y="14" width="36" height="36" rx="2" transform="rotate(45 32 32)"/></g><path d="M36.5 24a9 9 0 1 0 0 16 7.2 7.2 0 1 1 0-16z" fill="currentColor"/></svg>
+      </div>
+      <h1>رموز الدعاء</h1>
+      <p class="tagline">تحويل رموز عبارات الدعاء والثناء<br>مثل ﷺ و«رضي الله عنه» إلى عبارات نصية</p>
+    </div>
+  </header>
+
+  <main>
+    <section id="startPanel" class="panel">
+      <div class="lbl">نطاق البحث</div>
+      <div class="seg" role="radiogroup" aria-label="نطاق البحث">
+        <button class="seg-btn on" data-scope="doc" role="radio" aria-checked="true">المستند كله</button>
+        <button class="seg-btn" data-scope="sel" role="radio" aria-checked="false">النص المحدد</button>
+      </div>
+
+      <button id="scanBtn" class="btn primary big" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>ابحث عن الرموز</span>
+      </button>
+
+      <details class="opts" id="opts" open>
+        <summary><span>خيارات التحويل</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary>
+        <div class="opt-list">
+          <label class="sw"><input type="checkbox" id="oTashkeel" checked><i></i><span>تشكيل العبارة</span></label>
+          <label class="sw"><input type="checkbox" id="oColor" checked><i></i><span>إبقاء لون الرمز <em>(مثل الأحمر)</em></span></label>
+          <label class="sw"><input type="checkbox" id="oBrackets"><i></i><span>وضع العبارة بين قوسين ( )</span></label>
+          <label class="sw"><input type="checkbox" id="oNotes" checked><i></i><span>البحث في الحواشي أيضًا</span></label>
+          <div class="field">
+            <label for="oFont">خط العبارات</label>
+            <input id="oFont" type="text" placeholder="تلقائي: خط الكلام المجاور" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="preview-line" id="sample"></div>
+        </div>
+      </details>
+
+      <ul class="features">
+        <li>يعرف رموز خط <b>KFGQPC Arabic Symbols 01</b> كلها، ورموز يونيكود مثل <b>ﷺ</b>.</li>
+        <li>الرموز من خطوط أخرى تظهر لك لتكتب عبارتها مرة واحدة، فتُحفظ للمرات القادمة.</li>
+        <li>تأخذ العبارة خط الكلام المجاور وحجمه، ولا يُمسّ غير الرموز.</li>
+      </ul>
+    </section>
+
+    <section id="busyPanel" class="panel hidden" aria-live="polite">
+      <div class="loader" aria-hidden="true"><span></span><span></span><span></span></div>
+      <p id="busyText" class="busy-text">جارٍ الفحص…</p>
+      <div class="bar"><i id="barFill"></i></div>
+    </section>
+
+    <section id="resultsPanel" class="panel hidden">
+      <div class="res-head">
+        <button class="link" id="backBtn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          رجوع
+        </button>
+      </div>
+      <div class="stats" id="stats"></div>
+      <div id="groups"></div>
+      <div class="empty hidden" id="empty">
+        <div class="empty-mark" aria-hidden="true">ﷺ</div>
+        <p id="emptyText">لم يُعثر على رموز دعاء</p>
+        <small id="emptyHint"></small>
+      </div>
+      <div style="height:84px"></div>
+    </section>
+
+    <section id="donePanel" class="panel hidden">
+      <div class="done-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h2 id="doneTitle">تم التحويل</h2>
+      <p id="doneText" class="muted"></p>
+      <p class="hint">للتراجع استعمل <kbd>Ctrl</kbd> + <kbd>Z</kbd> في Word.</p>
+      <button class="btn primary" id="againBtn">فحص جديد</button>
+    </section>
+  </main>
+
+  <div class="dock hidden" id="dock">
+    <button id="applyBtn" class="btn primary big">تحويل المحدد</button>
+  </div>
+
+  <footer class="credit">إعداد: <b>سليمان حكمي</b></footer>
+
+  <div class="toast hidden" id="toast" role="status"></div>
+</div>
+<script src="engine.js?v=1.0.0"></script>
+<script src="app.js?v=1.0.0"></script>
+</body>
+</html>
